@@ -56,5 +56,5 @@ def test_reassemble():
 
     p_slow, p_fast = tt_lin_slow(x), tt_lin_fast(x)
 
-    assert torch.allclose(p_tt, p_mm)
-    assert torch.allclose(p_mm, p_tt)
+    assert torch.allclose(p_slow, p_fast)
+    assert torch.allclose(p_fast, p_slow)
