@@ -67,3 +67,7 @@ class TTLinear(torch.nn.Module):
             output += self.bias
 
         return output
+
+    def extra_repr(self):
+        shapes = ["x".join(map(str, nm)) for nm in zip(*self.shape)]
+        return "[" + "]x[".join(shapes) + f"] ({repr(self.rank)[1:-1]})"
