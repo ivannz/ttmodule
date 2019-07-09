@@ -47,10 +47,10 @@ def tensor_to_tt(tensor, rank=None):
     yield tensor.reshape(r_km1, shape[-1], 1)
 
 
-def tt_to_tensor(*cores):
+def tt_to_tensor(*cores, squeeze=True):
     """Assemble the tensor from TT representation with eq. (1.3) from [1]_."""
     tensor = cores[0]
     for core in cores[1:]:
         tensor = torch.tensordot(tensor, core, dims=[[-1], [0]])
 
-    return tensor.squeeze(0).squeeze(-1)  # [0, ..., 0]
+    return tensor.squeeze(0).squeeze(-1) if squeeze else tensor
