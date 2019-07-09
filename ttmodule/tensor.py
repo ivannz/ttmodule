@@ -54,3 +54,23 @@ def tt_to_tensor(*cores, squeeze=True):
         tensor = torch.tensordot(tensor, core, dims=[[-1], [0]])
 
     return tensor.squeeze(0).squeeze(-1) if squeeze else tensor
+
+
+def tr_to_tensor(*cores, k=0):
+    """Assemble the tensor from a TR representation with eq. (1) from [2]_."""
+    k = (len(cores) + k) if k < 0 else k
+    assert 0 <= k < len(cores)
+
+    # chip off the specified core and contract the rest of the cycle
+    rest = tt_to_tensor(*cores[k+1:], *cores[:k], squeeze=False)
+
+    # contract with tensordot (reshape einsum("i...j, j...i->...") was slower)
+    output = torch.tensordot(cores[k], rest, dims=[[0, -1], [-1, 0]])
+
+    # take the inner dims of the last k cores and roll back the dimensions
+    tail = sum(core.dim() - 2 for core in cores[:k])
+    if tail <= 0:
+        return output
+
+    dims = list(range(output.dim()))
+    return output.permute(dims[-tail:] + dims[:-tail])
