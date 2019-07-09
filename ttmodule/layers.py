@@ -17,10 +17,10 @@ class TTLinear(torch.nn.Module):
             rank = [1] + (len(in_shape) - 1) * [rank] + [1]
 
         if not all(isinstance(r, int) for r in rank):
-            types = [type(r).__name__ for r in rank]
-            raise TypeError(f"`rank` must be an int or a "
-                            f"list of ints. Got {types}.")
+            raise TypeError("`rank` must be an int or a list of ints.")
+
         assert len(rank) == len(out_shape) + 1
+        assert rank[0] == rank[-1]
 
         super().__init__()
 
