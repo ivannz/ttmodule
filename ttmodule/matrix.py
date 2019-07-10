@@ -2,6 +2,7 @@ from numpy import prod
 from itertools import chain
 
 from .tensor import tt_to_tensor, tensor_to_tt
+from .tensor import tr_to_tensor
 
 
 def get_shuffle(d):
@@ -43,4 +44,13 @@ def tt_to_matrix(shape, *cores):
     tensor = tt_to_tensor(*cores).permute(*inverse).contiguous()
 
     # 2. rehsape into a matrix, knowing that shape factor the dimensions
+    return tensor.reshape(prod(shape[0]), prod(shape[1]))
+
+
+def tr_to_matrix(shape, *cores, k=0):
+    assert len(shape[0]) == len(shape[1])
+
+    _, inverse = get_shuffle(len(shape[1]))
+    tensor = tr_to_tensor(*cores, k=k).permute(*inverse).contiguous()
+
     return tensor.reshape(prod(shape[0]), prod(shape[1]))
