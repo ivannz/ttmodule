@@ -57,7 +57,13 @@ def tt_to_tensor(*cores, squeeze=True):
 
 
 def tr_to_tensor(*cores, k=0):
-    """Assemble the tensor from a TR representation with eq. (1) from [2]_."""
+    """Assemble the tensor from a TR representation with eq. (1) from [1]_.
+
+    References
+    ----------
+    .. [1] Zhao, Q., Zhou, G., Xie, S., Zhang, L., & Cichocki, A. (2016).
+        'Tensor ring decomposition.' arXiv preprint arXiv:1606.05535.
+    """
     k = (len(cores) + k) if k < 0 else k
     assert 0 <= k < len(cores)
 

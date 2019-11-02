@@ -10,6 +10,14 @@ from .matrix import tt_to_matrix
 
 
 class TTLinear(torch.nn.Module):
+    """Tensor-Train linear layer, proposed in [1]_.
+
+    References
+    ----------
+    .. [1] Novikov, A., Podoprikhin, D., Osokin, A., & Vetrov, D. P. (2015).
+           'Tensorizing neural networks.'' In Advances in neural information
+           processing systems (pp. 442-450).
+    """
     def __init__(self, in_shape, out_shape, *, rank, bias=True,
                  reassemble=True):
         assert len(in_shape) == len(out_shape)
